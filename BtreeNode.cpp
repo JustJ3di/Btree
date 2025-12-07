@@ -1,6 +1,6 @@
 #include "BtreeNode.hpp"
 
-template <typename T, uint16_t M>
+template <typename T, uint16_t M, typename Allocator>
 bool BtreeNode<T, M>::isvalid()
 {
     const uint16_t MIN_KEY_NO_ROOT = (M + 1)/2 -1;
