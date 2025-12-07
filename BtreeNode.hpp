@@ -23,6 +23,6 @@ struct BtreeNode
     /* Is valid BtreeNode if current_key_number is <= MAX_KEY and >= [MAX/KEY]-1 
     *  Or if is the root and cuurrent_key_number may be 1
     */ 
-    inline bool isvalid(){ return (current_key_number <= MAX_KEY && current_key_number >= MAX_KEY/2 - 1) || (parent == nullptr || current_key_number >=1 && current_key_number<=MAX_KEY);}
+    bool isvalid();
 };
 
