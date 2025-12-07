@@ -6,7 +6,9 @@
 
 struct BtreeNode;
 
-template<typename T,uint16_t M = 256, typename Allocator = std::allocator<BtreeNode<T,M>>>
+template<typename T,
+        uint16_t M = 256, 
+        typename Allocator = std::allocator<T>>
 struct BtreeNode
 {
 
@@ -30,9 +32,27 @@ struct BtreeNode
     *  Or if is the root and cuurrent_key_number may be 1
     */ 
     bool isvalid();
+    
+    static TNode* AllocateNode(Allocator& a) {
+        
+        //Allocator standard
+        using NodeAlloc = typename std::allocator_traits<Allocator>::template rebind_alloc<TNode>;
+        NodeAlloc nodeAlloc(a); 
+        
+        TNode* newNode = nodeAlloc.allocate(1);
+        std::allocator_traits<NodeAlloc>::construct(nodeAlloc, newNode);
+        
+        return newNode;
+    }
 
-    static TNode *AllocateNode(Allocator& a);
-    static void DeallocateNode(Allocator& a, TNode* node);
+    static void DeallocateNode(Allocator& a, TNode* node) {
+        // 1. REBIND 
+        using NodeAlloc = typename std::allocator_traits<Allocator>::template rebind_alloc<TNode>;
+        NodeAlloc nodeAlloc(a);
+ 
+        std::allocator_traits<NodeAlloc>::destroy(nodeAlloc, node);
+        nodeAlloc.deallocate(node, 1);
+    }
 
 };
 
