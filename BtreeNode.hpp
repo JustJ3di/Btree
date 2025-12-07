@@ -7,14 +7,12 @@
 struct BtreeNode;
 
 template<typename T,
-        uint16_t M = 256, 
-        typename Allocator = std::allocator<T>>
+        uint16_t M = 256>
 struct BtreeNode
 {
 
     //Alias
-    using TNode = BtreeNode<T,M,Allocator>;
-
+    using TNode = BtreeNode<T,M>;
     const static uint16_t MAX_KEY = M - 1;
     std::array<T,MAX_KEY> keys;
     std::array<TNode* ,M> children;
@@ -31,28 +29,9 @@ struct BtreeNode
     /* Is valid BtreeNode if current_key_number is <= MAX_KEY and >= [MAX/KEY]-1 
     *  Or if is the root and cuurrent_key_number may be 1
     */ 
-    bool isvalid();
-    
-    static TNode* AllocateNode(Allocator& a) {
-        
-        //Allocator standard
-        using NodeAlloc = typename std::allocator_traits<Allocator>::template rebind_alloc<TNode>;
-        NodeAlloc nodeAlloc(a); 
-        
-        TNode* newNode = nodeAlloc.allocate(1);
-        std::allocator_traits<NodeAlloc>::construct(nodeAlloc, newNode);
-        
-        return newNode;
-    }
+    bool isvalid() const;
 
-    static void DeallocateNode(Allocator& a, TNode* node) {
-        // 1. REBIND 
-        using NodeAlloc = typename std::allocator_traits<Allocator>::template rebind_alloc<TNode>;
-        NodeAlloc nodeAlloc(a);
- 
-        std::allocator_traits<NodeAlloc>::destroy(nodeAlloc, node);
-        nodeAlloc.deallocate(node, 1);
-    }
+    int searchKey(const T&);
 
 };
 
