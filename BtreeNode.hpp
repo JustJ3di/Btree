@@ -13,13 +13,12 @@ struct BtreeNode
 
     //Alias
     using TNode = BtreeNode<T,M>;
+    
     const static uint16_t MAX_KEY = M - 1;
     std::array<T,MAX_KEY> keys;
     std::array<TNode* ,M> children;
-
     uint16_t current_key_number;
     bool isleaf;
-
     TNode *parent;
 
     inline BtreeNode():isleaf(true),parent(nullptr),current_key_number(0){
