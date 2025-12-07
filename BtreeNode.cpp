@@ -17,3 +17,23 @@ bool BtreeNode<T, M>::isvalid()
     
     return current_key_number >= MIN_KEY_NO_ROOT;
 }
+
+
+template <typename T, uint16_t M, typename Allocator>
+typename BtreeNode<T, M, Allocator>::TNode* BtreeNode<T, M, Allocator>::AllocateNode(Allocator& a) // Accetta l'istanza dell'allocatore
+{
+    using TNode = BtreeNode<T, M, Allocator>::TNode;
+
+    TNode *newNode = a.allocate(1);
+    
+    a.construct(newNode); 
+    
+    return newNode;
+}
+
+template <typename T, uint16_t M, typename Allocator>
+void BtreeNode<T, M, Allocator>::DeallocateNode(Allocator &a, TNode *node)
+{
+    a.destroy(node);
+    a.deallocate(node, 1);
+}

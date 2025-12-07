@@ -11,9 +11,7 @@ private:
     Allocator a;
 
 public:
-
-    Tnode *Tnodeallocate()
-    Btree():root(nullptr);
+    inline Btree():root(nullptr);
     ~Btree();
 };
 
