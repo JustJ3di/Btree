@@ -89,6 +89,8 @@ void Btree<Key,Value,M,Allocator>::insert(const Key &k, const Value &v){
     
 }
 
+
+//split preventivo
 //x è il nuovo nodo genitore mentre y è il vecchio
 template<typename Key,
         typename Value, 
@@ -117,7 +119,7 @@ void Btree<Key, Value, M, Allocator>::splitChild(TNode *x, int i , TNode *y)
         }
     }
 
-    // Riduciamo y. 
+    // Riduco il vecchio nodo.
     y->current_key_number = t - 1;
 
     // 3. FAI SPAZIO IN X PER IL PUNTATORE AL NUOVO FIGLIO Z

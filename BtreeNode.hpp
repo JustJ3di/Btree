@@ -4,7 +4,7 @@
 #include <array>
 #include <algorithm>
 
-struct BtreeNode;
+
 
 template<typename Key,
         typename Value,
@@ -21,9 +21,9 @@ struct BtreeNode
     std::array<TNode* ,M> children;
     uint16_t current_key_number;
     bool isleaf;
-    TNode *parent;
+    //TNode *parent;
 
-    inline BtreeNode():isleaf(true),parent(nullptr),current_key_number(0){
+    inline BtreeNode():isleaf(true),current_key_number(0){
         std::fill(children.begin(), children.end(), nullptr);
     }
     ~BtreeNode() = default;
@@ -32,7 +32,7 @@ struct BtreeNode
     */ 
     bool isvalid() const;
 
-    int searchKey(const T&);
+    int searchKey(const Key&);
 
 };
 
