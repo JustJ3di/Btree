@@ -69,9 +69,11 @@ void Btree<Key,Value,M,Allocator>::insert(const Key &k, const Value &v){
     //La radice è piena -> split
     if (root->current_key_number == root->MAX_KEY)
     {
+        //figlio sinistro.
         TNode* newRoot = createNode(false);
         newRoot->children[0] = root;
         
+        //figlio destro
         splitChild(newRoot, 0, root);
         
         int i = 0;
