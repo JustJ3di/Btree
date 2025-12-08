@@ -25,6 +25,26 @@ private:
 
     TNode *root;
 
+    // Metodo privato
+    void freeNode(TNode* node) {
+        if (node == nullptr) return;
+        std::allocator_traits<Allocator>::destroy(node_allocator, node);
+        node_allocator.deallocate(node, 1);
+    }
+    void deleteTreeRecursively(TNode* node) {
+        if (node == nullptr) return;
+
+        // Se non è una foglia, dobbiamo prima cancellare tutti i figli validi
+        if (!node->isleaf) {
+            // Un nodo con N chiavi ha N+1 figli.
+            // I figli validi vanno da indice 0 a current_key_number compreso.
+            for (int i = 0; i <= node->current_key_number; i++) {
+                deleteTreeRecursively(node->children[i]);
+            }
+        }
+
+        freeNode(node);
+    }
 
     //utilities
     void splitChild(TNode *, int, TNode *); //split del nodo
@@ -33,12 +53,18 @@ private:
 
 public:
     inline Btree():root(nullptr){};
-    ~Btree();
+    ~Btree(){clear()};
 
     const Value *search(const Key&)const;
     Value *search(const Key&);
 
     void insert(const Key&, const Value&);
+
+    void clear(){
+        if(root!=nullptr)
+            deleteTreeRecursively();
+        root=nullptr;
+    }
 
 };
 
