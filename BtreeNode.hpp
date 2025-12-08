@@ -27,10 +27,6 @@ struct BtreeNode
         std::fill(children.begin(), children.end(), nullptr);
     }
     ~BtreeNode() = default;
-    /* Is valid BtreeNode if current_key_number is <= MAX_KEY and >= [MAX/KEY]-1 
-    *  Or if is the root and cuurrent_key_number may be 1
-    */ 
-    bool isvalid() const;
 
     int searchKey(const Key&);
 

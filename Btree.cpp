@@ -31,8 +31,11 @@ const Value *Btree<Key, Value, M, Allocator>::search(const Key &k) const
     return nullptr;
 }
 
-template <typename Key, typename Value, uint16_t M, typename Allocator>
-Value *Btree<Key, Value, M, Allocator>::search(const Key &)
+template<typename Key,
+        typename Value,
+        uint16_t M,
+        typename Allocator>
+Value *Btree<Key, Value, M, Allocator>::search(const Key &k)
 {
     TNode* current = root;
 
