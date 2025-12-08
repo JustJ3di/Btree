@@ -3,8 +3,10 @@
 /*
     Funzione d'utilità per verificare se il numero di key è valido in un nodo.
 */
-template <typename T, uint16_t M>
-bool BtreeNode<T, M>::isvalid() const
+template<typename Key, 
+        typename Value, 
+        uint16_t M>
+bool BtreeNode<Key, Value, M>::isvalid() const
 {
     const uint16_t MIN_KEY_NO_ROOT = (M + 1)/2 - 1;
     if (current_key_number > MAX_KEY)
@@ -27,8 +29,8 @@ bool BtreeNode<T, M>::isvalid() const
     Il corretto ritorno è dato da distance che ritorna l'indice esatto dell'array di key.
 
 */
-template <typename T, uint16_t M>
-int BtreeNode<T, M>::searchKey(const T& key)
+template <typename Key,typename Value, uint16_t M>
+int BtreeNode<Key, Value, M>::searchKey(const T& key)
 {
     auto start = keys.begin();
     auto end = keys.begin() + current_key_number;

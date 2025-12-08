@@ -1,12 +1,15 @@
 #pragma once
 #include"BtreeNode.hpp"
 
-template<typename T, uint16_t M = 256,typename Allocator = std::allocator<T>>
+template<typename Key,
+        typename Value,
+        uint16_t M = 256,
+        typename Allocator = std::allocator<Key>>
 class Btree
 {
 
 private:
-    using TNode = BtreeNode<T,M>;
+    using TNode = BtreeNode<Key,Value,M>;
 
     /*
         Rebind allocatore:
@@ -20,6 +23,11 @@ private:
 public:
     inline Btree():root(nullptr){};
     ~Btree();
+
+    Value *search(const Key&)const;
+
+    void insert(const Key&, const Value&);
+
 };
 
 
