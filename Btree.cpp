@@ -95,18 +95,14 @@ void Btree<Key, Value, M, Allocator>::splitChild(TNode *x, int i , TNode *y)
     TNode* z = createNode(y->isleaf);
     
     // 't' (minimum degree) grado minimo del nodo 
-    int t = (y->MAX_KEYS + 1) / 2;
+    int t = (y->MAX_KEY + 1) / 2;
 
     // assegno a z il giusto numero di key
     z->current_key_number = t - 1;
-
-    // 1. COPIA CHIAVI/VALORI 
     for (int j = 0; j < t - 1; j++) {
         z->keys[j] = y->keys[j + t];
         z->values[j] = y->values[j + t];
     }
-
-    // 2. COPIA FIGLI (se non è foglia)
     if (!y->isleaf) {
         for (int j = 0; j < t; j++) {
             z->children[j] = y->children[j + t];
@@ -115,21 +111,19 @@ void Btree<Key, Value, M, Allocator>::splitChild(TNode *x, int i , TNode *y)
 
     // Riduco il vecchio nodo.
     y->current_key_number = t - 1;
-
-    // 3. FAI SPAZIO IN X PER IL PUNTATORE AL NUOVO FIGLIO Z
+    //copio i figli nella posizone nuova
     for (int j = x->current_key_number; j >= i + 1; j--) {
         x->children[j + 1] = x->children[j];
     }
     x->children[i + 1] = z;
 
-    // 4. FAI SPAZIO IN X PER LA CHIAVE MEDIANA CHE SALE
+    // copio chiavi e valori. nella  nuova posizione
     for (int j = x->current_key_number - 1; j >= i; j--) {
         x->keys[j + 1] = x->keys[j];
         x->values[j + 1] = x->values[j];
     }
 
-    // 5. PORTA SU LA CHIAVE MEDIANA
-
+    // set the new value
     x->keys[i] = y->keys[t - 1];
     x->values[i] = y->values[t - 1];
     
@@ -163,7 +157,7 @@ void Btree<Key, Value, M, Allocator>::insertNonFull(TNode *x, const Key &k, cons
         }
         i++;
 
-        if (x->children[i]->current_key_number == x->children[i]->MAX_KEYS) {
+        if (x->children[i]->current_key_number == x->children[i]->MAX_KEY) {
             
             splitChild(x, i, x->children[i]);
 

@@ -19,7 +19,7 @@ private:
     NodeAlloc node_allocator;
     TNode* createNode(bool isLeaf) {
         TNode* newNode = node_allocator.allocate(1);
-        std::allocator_traits<Allocator>::construct(node_allocator, newNode, isLeaf);
+        std::allocator_traits<NodeAlloc>::construct(node_allocator, newNode, isLeaf);
         return newNode;
     }
 
@@ -28,7 +28,7 @@ private:
     // Metodo privato
     void freeNode(TNode* node) {
         if (node == nullptr) return;
-        std::allocator_traits<Allocator>::destroy(node_allocator, node);
+        std::allocator_traits<NodeAlloc>::destroy(node_allocator, node);
         node_allocator.deallocate(node, 1);
     }
     void deleteTreeRecursively(TNode* node) {
@@ -51,19 +51,20 @@ private:
 
 public:
     inline Btree():root(nullptr){};
-    ~Btree(){clear()};
+    ~Btree(){clear();};
 
     const Value *search(const Key&)const;
     Value *search(const Key&);
 
     void insert(const Key&, const Value&);
-
     void clear(){
         if(root!=nullptr)
-            deleteTreeRecursively();
+            deleteTreeRecursively(root);
         root=nullptr;
-    }
+    }    
 
 };
 
+
+#include "Btree.cpp"
 

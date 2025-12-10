@@ -23,7 +23,7 @@ struct BtreeNode
     bool isleaf;
     //TNode *parent;
 
-    inline BtreeNode():isleaf(true),current_key_number(0){
+    inline BtreeNode(bool leaf = true):isleaf(true),current_key_number(0){
         std::fill(children.begin(), children.end(), nullptr);
     }
     ~BtreeNode() = default;
@@ -32,3 +32,4 @@ struct BtreeNode
 
 };
 
+#include "BtreeNode.cpp"
