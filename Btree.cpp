@@ -39,7 +39,7 @@ Value *Btree<Key, Value, M, Allocator>::search(const Key &k)
     }
     return nullptr;
 }
-
+#include <iostream>
 template<typename Key,
         typename Value,
         uint16_t M ,

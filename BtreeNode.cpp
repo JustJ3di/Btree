@@ -10,7 +10,7 @@
 template <typename Key,typename Value, uint16_t M>
 int BtreeNode<Key, Value, M>::searchKey(const Key& key)
 {
-    auto it = std::lower_bound(keys.begin(), keys.end()+current_key_number, key); //return the iterator to the first element >= key
+    auto it = std::lower_bound(keys.begin(), keys.begin()+current_key_number, key); //return the iterator to the first element >= key
     //GET THE INDEX
     //in un array<> è una semplice sottrazione di puntatori.
     //Ritorna l'indice corrispondente all'iteratore ottenuto da lower_bound
