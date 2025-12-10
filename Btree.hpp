@@ -34,10 +34,8 @@ private:
     void deleteTreeRecursively(TNode* node) {
         if (node == nullptr) return;
 
-        // Se non è una foglia, dobbiamo prima cancellare tutti i figli validi
+        
         if (!node->isleaf) {
-            // Un nodo con N chiavi ha N+1 figli.
-            // I figli validi vanno da indice 0 a current_key_number compreso.
             for (int i = 0; i <= node->current_key_number; i++) {
                 deleteTreeRecursively(node->children[i]);
             }

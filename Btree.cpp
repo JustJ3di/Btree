@@ -1,16 +1,6 @@
 #include "Btree.hpp"
 
 
-template<typename Key, 
-        typename Value,        
-        uint16_t M, 
-        typename Allocator>
-Btree<T, M, Allocator>::~Btree()
-{
-}
-
-
-
 template <typename Key,
           typename Value,
           uint16_t M,
@@ -72,8 +62,9 @@ void Btree<Key,Value,M,Allocator>::insert(const Key &k, const Value &v){
     //La radice è piena -> split
     if (root->current_key_number == root->MAX_KEY)
     {
-        //figlio sinistro.
+        //new root
         TNode* newRoot = createNode(false);
+        //primo figlio sinistro è il root
         newRoot->children[0] = root;
         
         //figlio destro
