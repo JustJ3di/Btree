@@ -48,6 +48,11 @@ private:
     void splitChild(TNode *, int, TNode *); //split del nodo
     void insertNonFull(TNode *, const Key &, const Value &);//insert nel nodo
 
+    void removeFromLeaf(TNode* node, int idx);
+
+    void removeFromNonLeaf(TNode *node, int idx) ;
+
+
 
 public:
     inline Btree():root(nullptr){};
@@ -57,6 +62,8 @@ public:
     Value *search(const Key&);
 
     void insert(const Key&, const Value&);
+    void del(const Key&);
+
     void clear(){
         if(root!=nullptr)
             deleteTreeRecursively(root);

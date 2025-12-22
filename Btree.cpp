@@ -168,3 +168,107 @@ void Btree<Key, Value, M, Allocator>::insertNonFull(TNode *x, const Key &k, cons
         insertNonFull(x->children[i], k, v);
     }
 }
+
+template<typename Key,
+        typename Value,
+        uint16_t M,
+        typename Allocator>
+void Btree<Key, Value, M, Allocator>::removeFromLeaf(TNode *node, int idx) {
+
+    for (int i = idx + 1; i < node->current_key_number; ++i) {
+        node->keys[i - 1] = node->keys[i];
+        node->values[i - 1] = node->values[i];
+    }
+    node->current_key_number--;
+}
+
+
+template<typename Key,
+        typename Value,
+        uint16_t M,
+        typename Allocator>
+void Btree<Key, Value, M, Allocator>::removeFromNonLeaf(TNode *node, int idx) {
+
+    Key k = node->keys[idx];
+
+    int t = (node->MAX_KEY + 1) / 2;
+
+    // --- CASE1
+    if (node->children[idx]->current_key_number >= t) {
+
+
+        TNode* cur = node->children[idx];
+        while (!cur->isleaf) {
+            cur = cur->children[cur->current_key_number];
+        }
+
+        Key predKey = cur->keys[cur->current_key_number - 1];
+        Value predVal = cur->values[cur->current_key_number - 1];
+
+        node->keys[idx] = predKey;
+        node->values[idx] = predVal;
+
+
+        removeInternal(node->children[idx], predKey);
+    }
+
+    // --- CASE2
+
+    else if (node->children[idx + 1]->current_key_number >= t) {
+
+
+        TNode* cur = node->children[idx + 1];
+        while (!cur->isleaf) {
+            cur = cur->children[0];
+        }
+
+
+        Key succKey = cur->keys[0];
+        Value succVal = cur->values[0];
+
+
+        node->keys[idx] = succKey;
+        node->values[idx] = succVal;
+
+
+        removeInternal(node->children[idx + 1], succKey);
+    }
+
+
+    else {
+
+        merge(node, idx);
+
+
+        removeInternal(node->children[idx], k);
+    }
+}
+
+
+template <typename Key,
+          typename Value,
+          uint16_t M,
+          typename Allocator>
+void Btree<Key, Value, M, Allocator>::del(const Key &k) {
+    //1
+    if (root == nullptr) {
+        return;
+    }
+    //2
+    if (search(k) == nullptr) {
+        return;
+    }
+    //3
+    removeInternal(root, k);
+
+    //4
+    if (root->current_key_number == 0) {
+        TNode* old = root;
+        if (root->isleaf) {
+            root = nullptr;
+        } else {
+          root = root->children[0];
+        }
+        freeNode(old);
+    }
+}
