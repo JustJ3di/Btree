@@ -49,10 +49,12 @@ private:
     void insertNonFull(TNode *, const Key &, const Value &);//insert nel nodo
 
     void removeFromLeaf(TNode* node, int idx);
-
-    void removeFromNonLeaf(TNode *node, int idx) ;
-
-
+    void removeFromNonLeaf(TNode *node, int idx);
+    void removeInternal(TNode* node, const Key& k);
+    void merge(TNode* node, int idx);
+    void fill(TNode* node, int idx);
+    void borrowFromPrev(TNode* node, int idx);
+    void borrowFromNext(TNode* node, int idx);
 
 public:
     inline Btree():root(nullptr){};

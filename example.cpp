@@ -1,8 +1,7 @@
 #include <iostream>
 #include "Btree.hpp"
 
-int main()
-{
+int main() {
     // M = 4 significa che ogni nodo può avere al massimo 3 chiavi.
     // Alla 4^ chiave, deve avvenire uno split.
     Btree<int, std::string, 4> btree; 
@@ -38,9 +37,10 @@ int main()
         }
     }
 
+    btree.del(10);
+
     if(all_good) {
         std::cout << "\nSUCCESS: Lo split funziona! L'albero è cresciuto in altezza." << std::endl;
     }
-
     return 0;
 }
