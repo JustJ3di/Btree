@@ -344,18 +344,16 @@ void Btree<Key, Value, M, Allocator>::removeInternal(TNode* node, const Key& k) 
     }
 }
 
-template<typename Key,
-        typename Value,
-        uint16_t M,
-        typename Allocator>
+template<typename Key, typename Value, uint16_t M, typename Allocator>
 void Btree<Key, Value, M, Allocator>::removeFromNonLeaf(TNode *node, int idx) {
+
     Key k = node->keys[idx];
+    
 
     int t = (node->MAX_KEY + 1) / 2;
 
-    // --- CASE1
-    if (node->children[idx]->current_key_number >= t) {
 
+    if (node->children[idx]->current_key_number >= t) {
 
         TNode* cur = node->children[idx];
         while (!cur->isleaf) {
@@ -365,16 +363,18 @@ void Btree<Key, Value, M, Allocator>::removeFromNonLeaf(TNode *node, int idx) {
         Key predKey = cur->keys[cur->current_key_number - 1];
         Value predVal = cur->values[cur->current_key_number - 1];
 
+
         node->keys[idx] = predKey;
         node->values[idx] = predVal;
 
 
-        removeInternal(node->children[idx], predKey);
+        removeInternal(node->children[idx], predKey); 
     }
 
-    // --- CASE2
 
     else if (node->children[idx + 1]->current_key_number >= t) {
+        
+
         TNode* cur = node->children[idx + 1];
         while (!cur->isleaf) {
             cur = cur->children[0];
@@ -382,10 +382,25 @@ void Btree<Key, Value, M, Allocator>::removeFromNonLeaf(TNode *node, int idx) {
 
 
         Key succKey = cur->keys[0];
-        Value succVal = cur->values[0];
+        Value succVal = cur->values[0]; // Ricorda sempre i valori!
+
+
+        node->keys[idx] = succKey;
+        node->values[idx] = succVal;
+
+ 
+        removeInternal(node->children[idx + 1], succKey);
+    }
+
+
+    else {
+
+        merge(node, idx);
+        
+
+        removeInternal(node->children[idx], k);
     }
 }
-
 
 
 template <typename Key,

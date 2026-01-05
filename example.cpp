@@ -39,6 +39,11 @@ int main() {
 
     btree.del(10);
 
+    auto *res = btree.search(10);
+    if (!res)
+        std::cout << "Eliminazione avvenuta con successo"<< std::endl;
+    
+
     if(all_good) {
         std::cout << "\nSUCCESS: Lo split funziona! L'albero è cresciuto in altezza." << std::endl;
     }
